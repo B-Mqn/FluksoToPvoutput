@@ -1,0 +1,19 @@
+#this file needs to be created in  /etc/systemd/system/    -   use  sudo nano /etc/systemd/system/mqtt_pvoutput.service     to create the file and paste this data inside
+#Mqqt-Pvoutput.py  Created by Bman - https://github.com/B-Mqn/FluksoToPVoutput
+#head over to https://forum.pvoutput.org to discuss it.
+
+
+[Unit]
+Description=MQTT to PVOutput Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/pi/mqtt_pvoutput.py
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
