@@ -51,7 +51,7 @@ CUSTOM_RULES = {
 #    "v1": "v2 / 12", # uncomment this line to create cumulative data from the live 5 minute averaged data for generation (these might not be needed after reading the pvoutput documentation )
 #    "v3": "v4 / 12", # uncomment this line to create cumulative data from the live 5 minute averaged data for consumption (these might not be needed after reading the pvoutput documentation )
 
-    "v4": "v4 * 6.421725",		# adjusting the power reading to factor in voltage and consumption clamp differences
+#    "v4": "v4 * 6.421725",		# adjusting the power reading to factor in voltage and consumption clamp differences
 #    "v8": "v7 + 100",         #random test
     # Add more rules as needed
 }
