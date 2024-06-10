@@ -1,4 +1,9 @@
-# FluksoToPVoutput V2 *** NEW VERSION *** (old version still available in "V1" Branch if this is causes you problems)
+# FluksoToPVoutput V2 *** NEW VERSION *** 
+  - Fixed rules and allowed more options
+  - aligned with 5 min hourly intervals
+  - added gauge and counter sensor types so water/gas should work aswell now
+  - and lots of bugfixes
+## (Old version still available in "V1" Branch if this causes you problems)
 ### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
 
 Im just learning myself so hope this works still work in progress so bare with me on the readme/files Trying to make this easy to follow with minimal knowledge like myself.
