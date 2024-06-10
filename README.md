@@ -1,4 +1,6 @@
 # FluksoToPVoutput
+This was the first version just to get things going... it has been replaced with a new updated version with alot of bugfixes please use the new version in the main branch
+
 ### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
 
 Im just learning myself so hope this works still work in progress so bare with me on the readme/files Trying to make this easy to follow with minimal knowledge like myself.
