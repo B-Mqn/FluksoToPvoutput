@@ -34,7 +34,7 @@ I use winscp to access the filesystem to make it easier for copy pasting etc whe
    -`touch /home/pi/f2pvobacklog.log` and then give it the correct permissions `sudo chmod 666 /home/pi/f2pvobacklog.log`
 9. Repeat for the debug log (this can be turned on using the true flag in flukso2pvoutput_mqtt.py. It will show errors and also show initial, adjusted and posted values so you can see how the rules are working)
    -`touch /home/pi/f2pvodebug.log` and then give it the correct permissions `sudo chmod 666 /home/pi/f2pvodebug.log`
-11. Test that it works `python /home/pi/flukso2pvoutput_mqtt.py` or `python3 /home/pi/flukso2pvoutput_mqtt.py`
+11. Test that it works `python3 /home/pi/flukso2pvoutput_mqtt.py`
    - if you see mqtt data getting listed then your all good! - press ctrl + c to close.
 
 
@@ -52,8 +52,7 @@ I use winscp to access the filesystem to make it easier for copy pasting etc whe
 3. `sudo systemctl status flukso2pvoutput_mqtt.service`
 
 ### troubleshooting 
-if your having issues stop the service using above stop command  and then run `python /home/pi/flukso2pvoutput_mqtt.py`  to see if you can see what the error/problem is (Ctrl + C to close). 
-  - After testing on another device I have had to use `python3 /home/pi/flukso2pvoutput_mqtt.py` for some reason. 
+if your having issues stop the service using above stop command  and then run `python3 /home/pi/flukso2pvoutput_mqtt.py`  to see if you can see what the error/problem is (Ctrl + C to close). 
   - This will show live mqtt data and other 5 min interval data - dont forget to start the service again or reboot the device. 
 Debugging
   - Enable the debug flag in the `flukso2pvoutput_mqtt.py` file - `DEBUG_LOG = True`  # True = On False = Off
