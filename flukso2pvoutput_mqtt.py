@@ -32,9 +32,9 @@ SENSORS = [
         "id": "sensor-id",						
         "type": "gauge",						# v1 - Energy Generation - kWh
         "pvoutput_v": "v4"						# v2 - Power Generation (live) - W
-    },									        # v3 - Energy Consumption - kWh
+    },									      # v3 - Energy Consumption - kWh
     # Sensor 3							        # v4 - Power Consumption (live) - W		
-    {									        # v5 - Temperature
+    {									      # v5 - Temperature
         "id": "sensor-id",						# v6 - Voltage
         "type": "gauge",						# v7 - v12 - Extended Data 
         "pvoutput_v": "v7"						  
