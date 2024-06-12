@@ -79,8 +79,6 @@ DEBUG_SLEEP_DURATION = 0  # Default is 0  # sleep time is normally 300 seconds (
 DEBUG_LOG = True  # True = On False = Off
 DEBUG_LOG_FILE = "/home/pi/f2pvodebug.log"
 
-
-
 # Callback function when connection to MQTT broker is established
 def on_connect(client, userdata, flags, rc):
     print(f"Connected to MQTT broker with result code {rc}")
@@ -119,7 +117,7 @@ def send_to_pvoutput(payload):
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
     }
     response = requests.post(PVOUTPUT_URL, data=payload, headers=headers)
-    return response.status_code, response.text
+    return response
 
 # Function to send batch data to PVOutput
 def send_batch_to_pvoutput(data_param):
@@ -128,9 +126,9 @@ def send_batch_to_pvoutput(data_param):
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
     }
     response = requests.post(PVOUTPUT_BATCH_URL, data={"data": data_param}, headers=headers)
-    return response.status_code, response.text
+    return response
 
-# Function to evaluate a single rule
+# Define the custom value adjustment rules
 def evaluate_rule(rule, values):
     try:
         return eval(rule, {}, values)
@@ -140,12 +138,11 @@ def evaluate_rule(rule, values):
 # Function to adjust values based on custom rules
 def adjust_values(values):
     adjusted_values = values.copy()
-    for key, rules in CUSTOM_RULES.items():
+    for key, rule in CUSTOM_RULES.items():
         if key in adjusted_values:
-            for rule in rules:
-                adjusted_value = evaluate_rule(rule, adjusted_values)
-                if adjusted_value is not None:
-                    adjusted_values[key] = adjusted_value
+            adjusted_value = evaluate_rule(rule, adjusted_values)
+            if adjusted_value is not None:
+                adjusted_values[key] = adjusted_value
     return adjusted_values
 
 # Function to write debug logs
@@ -154,7 +151,7 @@ def write_debug_log(message):
         with open(DEBUG_LOG_FILE, 'a') as log_file:
             log_file.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
 
-# Function to send average power and handle errors
+# Function to calculate the average power and send to PVOutput
 def send_average_to_pvoutput():
     global backlog  # Declare backlog as a global variable
     
@@ -217,15 +214,15 @@ def send_average_to_pvoutput():
         for key in keys_to_delete:
             del adjusted_payload[key]
 
-        status_code, response_text = send_to_pvoutput(adjusted_payload)
-        if status_code == 200:
-            print(f"Sent data to PVOutput: {status_code} {response_text}")
+        response = send_to_pvoutput(adjusted_payload)
+        if response.status_code == 200:
+            print(f"Sent data to PVOutput: {response.status_code} {response.text}")
             print(f"Payload: {adjusted_payload}")
-            write_debug_log(f"Sent data to PVOutput: {status_code} {response_text}")
+            write_debug_log(f"Sent data to PVOutput: {response.status_code} {response.text}")
             write_debug_log(f"Payload: {adjusted_payload}")
         else:
-            print(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
-            write_debug_log(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
+            print(f"Failed to send data to PVOutput: {response.status_code} {response.text}")
+            write_debug_log(f"Failed to send data to PVOutput: {response.status_code} {response.text}")
             backlog.append(adjusted_payload)
             save_backlog_data(backlog)
     else:
@@ -236,15 +233,15 @@ def send_average_to_pvoutput():
         while backlog:
             data_param = ';'.join([f"{entry['d']},{entry['t']},{entry['v1']},{entry['v2']},{entry['v3']},{entry['v4']},{entry['v5']},{entry['v6']},{entry['v7']},{entry['v8']},{entry['v9']},{entry['v10']},{entry['v11']},{entry['v12']}"
                                    for entry in backlog])
-            status_code, response_text = send_batch_to_pvoutput(data_param)
-            if status_code == 200:
-                print(f"Backlog sent successfully: {status_code} {response_text}")
-                write_debug_log(f"Backlog sent successfully: {status_code} {response_text}")
+            response = send_batch_to_pvoutput(data_param)
+            if response.status_code == 200:
+                print(f"Backlog sent successfully: {response.status_code} {response.text}")
+                write_debug_log(f"Backlog sent successfully: {response.status_code} {response.text}")
                 backlog = backlog[30:]
                 save_backlog_data(backlog)
             else:
-                print(f"Failed to send backlog: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
-                write_debug_log(f"Failed to send backlog: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
+                print(f"Failed to send backlog: {response.status_code} {response.text}")
+                write_debug_log(f"Failed to send backlog: {response.status_code} {response.text}")
 
     readings.clear()
 
@@ -277,10 +274,10 @@ backlog = []
 client.loop_start()
 
 # Ensure the initial run time is at the next 5-minute interval
-#now = datetime.now()
-#initial_wait = ((5 - (now.minute % 5)) * 60 - now.second)
-#print(f"Initial wait time: {initial_wait} seconds")
-#time.sleep(initial_wait)
+now = datetime.now()
+initial_wait = ((5 - (now.minute % 5)) * 60 - now.second)
+print(f"Initial wait time: {initial_wait} seconds")
+time.sleep(initial_wait)
 
 # Main loop to run the function every 5 minutes
 while True:
