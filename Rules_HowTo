@@ -1,19 +1,26 @@
-How the rules work
-Rules run from Line to line top to bottom.
-Each Pvoutput "v" value can only assigned once but multiple rules can apply to each value.
-i would like to have each rule seperate but this is the best i have got and it works. its imperetive that the rules are aligned in the correct order both with the lines and within the rules
+
+## How the Rules Work ##
+
+Rules are processed sequentially from top to bottom. 
+With each PVOutput "v" value being assigned only once, though multiple rules can apply to each value. 
+It's crucial to align the rules correctly in the list and within the rules themselves to ensure proper functionality.
 
 
-## Using If rules seem to be a bit backwards so to explain ##
-Actual Rule                                                      "v4": "0 if v4 < 50 else v4",
-Explaing the If rule                                             "v4": "(Pvoutput "v" value )": "0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)", 
-template replace the text and brackets with required values      "(Pvoutput "v" value )": "(Answer) (Question and Criteria) else (Answer if doesn't meet criteria)", 
+## Understanding If Rules ##
+If rules may seem counterintuitive at first. Here's an explanation:
+
+Actual Rule:              "v4": "0 if v4 < 50 else v4"
+Explanation:              "v4": "0 (Result) if v4 < 50 (Condition) else v4 (Result if condition not met)"
+Template:                 "(PVOutput 'v' value)": "(Result) if (Condition) else (Result if condition not met)"
 
 
-## How Multiple rules work ##
-v value":["rule 1"," rule 2","rule 3","rule 4 etc"],
- "v2": ["v2 * 0.89","0 if v2 < 50 else v2"],
+## Applying Multiple Rules ##
+When multiple rules are applied to a value, they are processed sequentially:
 
+Example: 
+"v2": ["v2 * 0.89", "0 if v2 < 50 else v2"]
+v value":["rule 1","rule 2","rule 3","rule 4 etc"],
+ 
 
 ## Example of some rules ##
 CUSTOM_RULES = {
@@ -27,3 +34,16 @@ CUSTOM_RULES = {
     "v12": ["v11 + 100"],                             # v11 = 400 from above rule so v12 = 500
     # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
 }
+
+
+## ordering of rules ##
+To ensure the rules are applied correctly, you need to process the rule for v2 before the rule for v4. 
+This is because v4 depends on the updated value of v2. First, apply the rule for v2 (v2 = v2 * 0.89). After updating v2, apply the rule for v4 (v4 = v4 * 0.89). 
+This sequence ensures that when v4 is compared to v2 ((v4 + v2) if v2 < 50 else v4) , both values have been correctly adjusted. 
+If you reverse the order, (v4 * 0.89) would be compared to v2 before v2 has been updated, leading to incorrect results.
+
+CUSTOM_RULES = {
+   "v2": ["v2 * 0.89","0 if v2 < 50 else v2"],
+   "v4": ["v4 * 0.89","(v4 + v2) if v2 < 50 else v4"],
+}
+
