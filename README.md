@@ -1,5 +1,6 @@
 # FluksoToPVoutput V2 *** NEW VERSION *** 
-  - Fixed rules and allowed more options
+## V3 in testing in the (Patch 1 Branch) -  multi rules for the same value fix
+  - Fixed rules and allowed more options (still no multi rules for the same value)
   - aligned with 5 min hourly intervals
   - added gauge and counter sensor types so water/gas should work aswell now
   - and lots of bugfixes
