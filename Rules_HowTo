@@ -1,1 +1,29 @@
+How the rules work
+Rules run from Line to line top to bottom.
+Each Pvoutput "v" value can only assigned once but multiple rules can apply to each value.
+i would like to have each rule seperate but this is the best i have got and it works. its imperetive that the rules are aligned in the correct order both with the lines and within the rules
 
+
+## Using If rules seem to be a bit backwards so to explain ##
+Actual Rule                                                      "v4": "0 if v4 < 50 else v4",
+Explaing the If rule                                             "v4": "(Pvoutput "v" value )": "0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)", 
+template replace the text and brackets with required values      "(Pvoutput "v" value )": "(Answer) (Question and Criteria) else (Answer if doesn't meet criteria)", 
+
+
+## How Multiple rules work ##
+v value":["rule 1"," rule 2","rule 3","rule 4 etc"],
+ "v2": ["v2 * 0.89","0 if v2 < 50 else v2"],
+
+
+## Example of some rules ##
+CUSTOM_RULES = {
+    # "v1": ["v2 / 12"],                              # Converts a live value ie. Watts to an energy value (Watt Hour) but this is not needed as pvoutput already does this.
+    # "v4": ["v3 * 12"],                              # Converts an energy value (Watt Hour) to a live value (Watts) but this is not needed as pvoutput already does this.
+    "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],     # Applying both rules sequentially left to right the first rule is done then the second rule. rules are seperated by a comma
+    "v8": ["v7 + 100"],                               # Assuming v7 = 0 then v8 = 100
+    "v9": ["v8 + 100"],                               # v8 = 100 from above rule so v9 = 200
+    "v10": ["v9 + 100"],                              # v9 = 200 from above rule so v10 = 300
+    "v11": ["v10 + 100"],                             # v0 = 300 from above rule so v11 = 400
+    "v12": ["v11 + 100"],                             # v11 = 400 from above rule so v12 = 500
+    # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
+}
