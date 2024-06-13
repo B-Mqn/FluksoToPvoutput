@@ -1,3 +1,5 @@
+ # V3
+
 import paho.mqtt.client as mqtt
 import time
 import requests
@@ -303,4 +305,5 @@ while True:
     print(f"Next run time: {next_run_time.strftime('%H:%M')}")
     
     # Sleep until the next run time
+    time.sleep((next_run_time - now).total_seconds())
     time.sleep((next_run_time - now).total_seconds())
