@@ -41,13 +41,13 @@ SENSORS = [
         "type": "gauge",				 # v1 - Energy Generation - kWh
         "pvoutput_v": "v4"				 # v2 - Power Generation (live) - W
     },							 # v3 - Energy Consumption - kWh
-    # Sensor 3			 	 	 # v4 - Power Consumption (live) - W		
+    # Sensor 3			 	 	     # v4 - Power Consumption (live) - W		
     {							 # v5 - Temperature
         "id": "sensor-id",				 # v6 - Voltage
         "type": "gauge",				 # v7 - v12 - Extended Data 
         "pvoutput_v": "v7"						  
     },									 
-    # Sensor 4				  	 # Counter for water/gas may require a rule pending pulse output.. 
+    # Sensor 4				  	     # Counter for water/gas may require a rule pending pulse output.. 
     {							 # 1 counter is 1 pulse per _ L
         "id": "sensor-id",				 # my meter is 0.5L per pulse so I have a rule "v7": "v7 / 2", # To display actual L used
         "type": "gauge",
