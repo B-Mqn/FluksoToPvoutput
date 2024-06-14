@@ -27,14 +27,14 @@ BACKLOG_FILE = "/home/pi/f2pvobacklog.log"
 #
 
 
-# Sensors configuration 
+# Sensors configuration # please read the comments to see what to do
 SENSORS = [
     # Sensor 1
     {
         "id": "sensor-id", 		# Sensor ID - Flukso Sensor id # replace the "sensor-id" section (retaining the quotation marks)
-        "type": "gauge",           # Sensor type: counter or gauge (I recomend gauge for power and counter for water)
-       "pvoutput_v": "v2"          # For solar please use V2 and for consumption please use v4   # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
-    },								                    	
+        "type": "gauge",           # Sensor type: "counter" or "gauge" (I recomend gauge for power and counter for water)
+       "pvoutput_v": "v2"          # For solar please use v2 and for consumption please use v4   # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
+    },								                    	# NOTE "v" VALUES SHOULD ALL BE LOWERCASE!!
     # Sensor 2							
     {									# https://pvoutput.org/help/api_specification.html
         "id": "sensor-id",						
