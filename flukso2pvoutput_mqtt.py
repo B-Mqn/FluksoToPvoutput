@@ -54,6 +54,7 @@ SENSORS = [
     },
 ]
 
+
 # Define the custom value adjustment rules # there is a "Rules_how_to" file in the github to show more about setting rules.
 
 # If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
@@ -78,7 +79,8 @@ CUSTOM_RULES = {
 ########################################  Debug mode  ########################################
 
 # Debug settings
-DEBUG_SLEEP_DURATION = 0  # Default is 0  this is how long the loop takes to run. 10 to 15 is a good setting for testing # sleep time is normally 300 seconds (5 minutes)
+DEBUG_SLEEP_DURATION = 0  # Default is 0 , this is how long the loop takes to run. 10 to 15 is a good setting for testing # sleep time is normally 300 seconds (5 minutes).
+# I reccomend modifying BOTH pvoutput urls so you dont send data every 10 seconds!. I just changed /service/ to /servicezz/
 DEBUG_LOG = False  # True = On False = Off
 DEBUG_LOG_FILE = "/home/pi/f2pvodebug.log"
 
