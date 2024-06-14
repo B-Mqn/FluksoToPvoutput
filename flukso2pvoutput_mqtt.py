@@ -1,4 +1,4 @@
- # V3
+ # V3.1
 
 import paho.mqtt.client as mqtt
 import time
