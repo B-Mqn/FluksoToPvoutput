@@ -306,4 +306,3 @@ while True:
     
     # Sleep until the next run time
     time.sleep((next_run_time - now).total_seconds())
-    time.sleep((next_run_time - now).total_seconds())
