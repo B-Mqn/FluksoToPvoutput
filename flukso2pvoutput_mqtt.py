@@ -20,13 +20,6 @@ PVOUTPUT_SYSTEMID = "xxxxx"
 
 BACKLOG_FILE = "/home/pi/f2pvobacklog.log"
 
-
-# 
-
-#
-#
-
-
 # Sensors configuration # please read the comments to see what to do
 SENSORS = [
     # Sensor 1
@@ -62,12 +55,13 @@ SENSORS = [
 ]
 
 # Define the custom value adjustment rules # there is a "Rules_how_to" file in the github to show more about setting rules.
-#
+
 # If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
-#				
+
 
 # Define the custom value adjustment rules 
 # See the Rules_HowTo_F2PVO file on github for an idea on what to do, There are some examples below
+
 CUSTOM_RULES = {
     # "v1": ["v2 / 12"],  # Converts a live value ie. Watts to an energy value ie Wh...... but this is not needed as pvoutput already does this.
     # "v3": ["v4 / 12"],  # See above rule
