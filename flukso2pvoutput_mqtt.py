@@ -100,13 +100,14 @@ CUSTOM_RULES = {
     # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
 }
 
-###################################### Don't Edit Below Unless You Know What You're Doing ######################################
+########################################  Debug mode  ########################################
 
 # Debug settings
-DEBUG_SLEEP_DURATION = 0  # Default is 0  # sleep time is normally 300 seconds (5 minutes)
+DEBUG_SLEEP_DURATION = 0  # Default is 0  this is how long the loop takes to run. 10 to 15 is a good setting for testing # sleep time is normally 300 seconds (5 minutes)
 DEBUG_LOG = False  # True = On False = Off
 DEBUG_LOG_FILE = "/home/pi/f2pvodebug.log"
 
+##################### Don't Edit Below Unless You Know What You're Doing #####################
 
 # Callback function when connection to MQTT broker is established
 def on_connect(client, userdata, flags, rc):
@@ -308,11 +309,15 @@ backlog = []
 # Start MQTT loop
 client.loop_start()
 
-# Ensure the initial run time is at the next 5-minute interval
-#now = datetime.now()
-#initial_wait = ((5 - (now.minute % 5)) * 60 - now.second)
-#print(f"Initial wait time: {initial_wait} seconds")
-#time.sleep(initial_wait)
+
+    # Ensure the initial run time is at the next 5-minute interval
+if DEBUG_SLEEP_DURATION == 0:
+    now = datetime.now()
+    initial_wait = ((5 - (now.minute % 5)) * 60 - now.second)
+    print(f"Initial wait time: {initial_wait} seconds")
+    time.sleep(initial_wait)
+else:
+    print("Skipping initial wait due to DEBUG_SLEEP_DURATION being set.")
 
 # Main loop to run the function every 5 minutes
 while True:
