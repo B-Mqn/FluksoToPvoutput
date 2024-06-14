@@ -36,13 +36,13 @@ SENSORS = [
        "pvoutput_v": "v2"          # For solar please use v2 and for consumption please use v4   # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
     },								     # NOTE "v" VALUES SHOULD ALL BE LOWERCASE!!
     # Sensor 2							
-    {									# https://pvoutput.org/help/api_specification.html
+    {								      # https://pvoutput.org/help/api_specification.html
         "id": "sensor-id",						
         "type": "gauge",						# v1 - Energy Generation - kWh
         "pvoutput_v": "v4"						# v2 - Power Generation (live) - W
-    },									      # v3 - Energy Consumption - kWh
-    # Sensor 3							   # v4 - Power Consumption (live) - W		
-    {									   # v5 - Temperature
+    },								     # v3 - Energy Consumption - kWh
+    # Sensor 3							    # v4 - Power Consumption (live) - W		
+    {									      # v5 - Temperature
         "id": "sensor-id",						# v6 - Voltage
         "type": "gauge",						# v7 - v12 - Extended Data 
         "pvoutput_v": "v7"						  
@@ -61,26 +61,7 @@ SENSORS = [
     },
 ]
 
-
-# Define the custom value adjustment rules
-#
-# If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
-#				
-
-# Define the custom value adjustment rules
-CUSTOM_RULES = {
-    # "v1": ["v2 / 12"],  # Converts a live value ie. Watts to an energy value ie Wh...... but this is not needed as pvoutput already does this.
-    # "v3": ["v4 / 12"],
-    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying both rules sequentially the first rule is done first then the second rule is seperated by a comma
-    # "v8": ["v7 + 100"],  # Assuming v7 = 0 then v8 = 100
-    # "v9": ["v8 + 100"],  # v8 = 100 from above rule so v9 = 200
-    # "v10": ["v9 + 100"],
-    # "v11": ["v10 + 100"],
-    # "v12": ["v11 + 100"],
-    # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
-}
-
-# Define the custom value adjustment rules # there is a Rules how_to file in the github to show more about setting rules.
+# Define the custom value adjustment rules # there is a "Rules_how_to" file in the github to show more about setting rules.
 #
 # If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
 #				
@@ -91,7 +72,7 @@ CUSTOM_RULES = {
     # "v1": ["v2 / 12"],  # Converts a live value ie. Watts to an energy value ie Wh...... but this is not needed as pvoutput already does this.
     # "v3": ["v4 / 12"],  # See above rule
     # "v2": ["v2 * 0.75"], # adjust the sensor readings by a multiplication of xxx to get teh correct reading.
-    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying both rules sequentially the first rule is done first then the second rule is seperated by a comma.
+    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying 2 rules sequentially the first rule is done first then seperated by a comma, the second rule is applied.
     # "v8": ["v7 + 100"],  # Assuming v7 = 0 then v8 = 100
     # "v9": ["v8 + 100"],  # v8 = 100 from above rule so v9 = 200
     # "v10": ["v9 + 100"],
