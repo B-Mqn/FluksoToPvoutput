@@ -21,14 +21,20 @@ PVOUTPUT_SYSTEMID = "xxxxx"
 BACKLOG_FILE = "/home/pi/f2pvobacklog.log"
 
 
-# Sensors configuration
+# 
+
+#
+#
+
+
+# Sensors configuration 
 SENSORS = [
     # Sensor 1
     {
         "id": "sensor-id", 		# Sensor ID - Flukso Sensor id # replace the "sensor-id" section (retaining the quotation marks)
         "type": "gauge",           # Sensor type: counter or gauge (I recomend gauge for power and counter for water)
-        "pvoutput_v": "v2"         # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
-    },									
+       "pvoutput_v": "v2"          # For solar please use V2 and for consumption please use v4   # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
+    },								                    	
     # Sensor 2							
     {									# https://pvoutput.org/help/api_specification.html
         "id": "sensor-id",						
@@ -79,11 +85,13 @@ CUSTOM_RULES = {
 # If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
 #				
 
-# Define the custom value adjustment rules
+# Define the custom value adjustment rules 
+# See the Rules_HowTo_F2PVO file on github for an idea on what to do, There are some examples below
 CUSTOM_RULES = {
     # "v1": ["v2 / 12"],  # Converts a live value ie. Watts to an energy value ie Wh...... but this is not needed as pvoutput already does this.
-    # "v3": ["v4 / 12"],
-    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying both rules sequentially the first rule is done first then the second rule is seperated by a comma
+    # "v3": ["v4 / 12"],  # See above rule
+    # "v2": ["v2 * 0.75"], # adjust the sensor readings by a multiplication of xxx to get teh correct reading.
+    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying both rules sequentially the first rule is done first then the second rule is seperated by a comma.
     # "v8": ["v7 + 100"],  # Assuming v7 = 0 then v8 = 100
     # "v9": ["v8 + 100"],  # v8 = 100 from above rule so v9 = 200
     # "v10": ["v9 + 100"],
