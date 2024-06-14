@@ -74,13 +74,30 @@ CUSTOM_RULES = {
     # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
 }
 
+# Define the custom value adjustment rules # there is a Rules how_to file in the github to show more about setting rules.
+#
+# If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
+#				
+
+# Define the custom value adjustment rules
+CUSTOM_RULES = {
+    # "v1": ["v2 / 12"],  # Converts a live value ie. Watts to an energy value ie Wh...... but this is not needed as pvoutput already does this.
+    # "v3": ["v4 / 12"],
+    # "v4": ["v4 * 0.75", "0 if v4 < 300 else v4"],  # Applying both rules sequentially the first rule is done first then the second rule is seperated by a comma
+    # "v8": ["v7 + 100"],  # Assuming v7 = 0 then v8 = 100
+    # "v9": ["v8 + 100"],  # v8 = 100 from above rule so v9 = 200
+    # "v10": ["v9 + 100"],
+    # "v11": ["v10 + 100"],
+    # "v12": ["v11 + 100"],
+    # Add more rules as needed, (values update after each rule so you can use an updated value from one rule for the next rule) (the rules run from top to bottom).
+}
+
 ###################################### Don't Edit Below Unless You Know What You're Doing ######################################
 
 # Debug settings
 DEBUG_SLEEP_DURATION = 0  # Default is 0  # sleep time is normally 300 seconds (5 minutes)
-DEBUG_LOG = True  # True = On False = Off
+DEBUG_LOG = False  # True = On False = Off
 DEBUG_LOG_FILE = "/home/pi/f2pvodebug.log"
-
 
 
 # Callback function when connection to MQTT broker is established
@@ -121,7 +138,8 @@ def send_to_pvoutput(payload):
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
     }
     response = requests.post(PVOUTPUT_URL, data=payload, headers=headers)
-    return response.status_code, response.text
+    return response.status_code, response.text.split('<')[0]  # Only return the text before the first '<'
+
 
 # Function to send batch data to PVOutput
 def send_batch_to_pvoutput(data_param):
@@ -130,7 +148,8 @@ def send_batch_to_pvoutput(data_param):
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
     }
     response = requests.post(PVOUTPUT_BATCH_URL, data={"data": data_param}, headers=headers)
-    return response.status_code, response.text
+    return response.status_code, response.text.split('<')[0]  # Only return the text before the first '<'
+
 
 # Function to evaluate a single rule
 def evaluate_rule(rule, values):
@@ -150,29 +169,46 @@ def adjust_values(values):
                     adjusted_values[key] = adjusted_value
     return adjusted_values
 
+
 # Function to write debug logs
 def write_debug_log(message):
     if DEBUG_LOG:
         with open(DEBUG_LOG_FILE, 'a') as log_file:
             log_file.write(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} - {message}\n")
 
-# Function to send average power and handle errors
+
+# Backlog handling
+def save_backlog_data(backlog):
+    try:
+        with open(BACKLOG_FILE, 'w') as f:
+            json.dump(backlog, f)
+    except IOError as e:
+        write_debug_log(f"Error saving backlog file: {e}")
+
+
+def load_backlog():
+    try:
+        with open(BACKLOG_FILE, 'r') as f:
+            backlog = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        backlog = []
+    return backlog
+
+
+# Main processing
 def send_average_to_pvoutput():
-    global backlog  # Declare backlog as a global variable
-    
+    global backlog
+
     backlog = load_backlog()
-    
+
     if readings:
         sensor_readings = {}
-        
-        # Organize readings by sensor
         for reading in readings:
             sensor_id = reading['sensor_id']
             if sensor_id not in sensor_readings:
                 sensor_readings[sensor_id] = []
             sensor_readings[sensor_id].append(reading)
-        
-        # Prepare the payload with averaged sensor data
+
         payload = {
             'd': datetime.now().strftime("%Y%m%d"),
             't': datetime.now().strftime("%H:%M"),
@@ -205,17 +241,14 @@ def send_average_to_pvoutput():
         write_debug_log(f"Initial payload: {payload}")
 
         adjusted_payload = adjust_values(payload)
-
         write_debug_log(f"Adjusted payload: {adjusted_payload}")
 
-        # Find the keys to delete
         keys_to_delete = []
         for key in list(adjusted_payload.keys()):
             sensor_id = next((sensor['id'] for sensor in SENSORS if sensor['pvoutput_v'] == key), None)
             if adjusted_payload[key] == 0 and (sensor_id is None or len(sensor_id) != 32):
                 keys_to_delete.append(key)
 
-        # Delete the keys
         for key in keys_to_delete:
             del adjusted_payload[key]
 
@@ -226,19 +259,20 @@ def send_average_to_pvoutput():
             write_debug_log(f"Sent data to PVOutput: {status_code} {response_text}")
             write_debug_log(f"Payload: {adjusted_payload}")
         else:
-            print(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
-            write_debug_log(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]}  {adjusted_payload}")  # Log only the initial part of the response text
-#            write_debug_log(f"Failed to send Payload: {adjusted_payload}")
+            print(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]}")
+            write_debug_log(f"Failed to send data to PVOutput: {status_code} {response_text.split('<')[0]} {adjusted_payload}")
             backlog.append(adjusted_payload)
             save_backlog_data(backlog)
     else:
         print("No readings to send to PVOutput")
 
-    # Attempt to send backlog data
     if backlog:
+        write_debug_log(f"Backlog size: {len(backlog)}")
         while backlog:
-            data_param = ';'.join([f"{entry['d']},{entry['t']},{entry['v1']},{entry['v2']},{entry['v3']},{entry['v4']},{entry['v5']},{entry['v6']},{entry['v7']},{entry['v8']},{entry['v9']},{entry['v10']},{entry['v11']},{entry['v12']}"
-                                   for entry in backlog])
+            data_param = ';'.join(
+                [f"{entry['d']},{entry['t']},{entry.get('v1', 0)},{entry.get('v2', 0)},{entry.get('v3', 0)},{entry.get('v4', 0)},{entry.get('v5', 0)},{entry.get('v6', 0)},{entry.get('v7', 0)},{entry.get('v8', 0)},{entry.get('v9', 0)},{entry.get('v10', 0)},{entry.get('v11', 0)},{entry.get('v12', 0)}"
+                 for entry in backlog[:30]]
+            )
             status_code, response_text = send_batch_to_pvoutput(data_param)
             if status_code == 200:
                 print(f"Backlog sent successfully: {status_code} {response_text}")
@@ -246,24 +280,11 @@ def send_average_to_pvoutput():
                 backlog = backlog[30:]
                 save_backlog_data(backlog)
             else:
-                print(f"Failed to send backlog: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
-                write_debug_log(f"Failed to send backlog: {status_code} {response_text.split('<')[0]}")  # Log only the initial part of the response text
+                print(f"Failed to send backlog data to PVOutput: {status_code} {response_text}")
+                write_debug_log(f"Failed to send backlog data to PVOutput: {status_code} {response_text}")
+                break
 
     readings.clear()
-
-# Function to save backlog data to a file
-def save_backlog_data(backlog):
-    with open(BACKLOG_FILE, 'a') as f:
-        f.write(json.dumps(backlog) + '\n')
-
-# Function to load backlog data from a file
-def load_backlog():
-    try:
-        with open(BACKLOG_FILE, 'r') as f:
-            backlog = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        backlog = []
-    return backlog
 
 # Initialize MQTT client
 client = mqtt.Client()
