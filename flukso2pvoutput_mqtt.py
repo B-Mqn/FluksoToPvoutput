@@ -34,22 +34,22 @@ SENSORS = [
         "id": "sensor-id", 		# Sensor ID - Flukso Sensor id # replace the "sensor-id" section (retaining the quotation marks)
         "type": "gauge",           # Sensor type: "counter" or "gauge" (I recomend gauge for power and counter for water)
        "pvoutput_v": "v2"          # For solar please use v2 and for consumption please use v4   # PVOutput Power Value (v1 - v12) # adjust to what suits see list below for "v" values.
-    },								     # NOTE "v" VALUES SHOULD ALL BE LOWERCASE!!
+    },							 # NOTE "v" VALUES SHOULD ALL BE LOWERCASE!!
     # Sensor 2							
-    {								      # https://pvoutput.org/help/api_specification.html
+    {							 # https://pvoutput.org/help/api_specification.html
         "id": "sensor-id",						
-        "type": "gauge",						# v1 - Energy Generation - kWh
-        "pvoutput_v": "v4"						# v2 - Power Generation (live) - W
-    },								      # v3 - Energy Consumption - kWh
-    # Sensor 3							    # v4 - Power Consumption (live) - W		
-    {								      # v5 - Temperature
-        "id": "sensor-id",						# v6 - Voltage
-        "type": "gauge",						# v7 - v12 - Extended Data 
+        "type": "gauge",							 # v1 - Energy Generation - kWh
+        "pvoutput_v": "v4"							 # v2 - Power Generation (live) - W
+    },							 # v3 - Energy Consumption - kWh
+    # Sensor 3							 # v4 - Power Consumption (live) - W		
+    {							 # v5 - Temperature
+        "id": "sensor-id",							 # v6 - Voltage
+        "type": "gauge",							 # v7 - v12 - Extended Data 
         "pvoutput_v": "v7"						  
     },									 
-    # Sensor 4							        # Counter for water/gas may require a rule pending pulse output.. 
-    {								      # 1 counter is 1 pulse per _ L
-        "id": "sensor-id",						# my meter is 0.5L per pulse so I have a rule "v7": "v7 / 2", # To display actual L used
+    # Sensor 4							 # Counter for water/gas may require a rule pending pulse output.. 
+    {							 # 1 counter is 1 pulse per _ L
+        "id": "sensor-id",							 # my meter is 0.5L per pulse so I have a rule "v7": "v7 / 2", # To display actual L used
         "type": "gauge",
         "pvoutput_v": "v8"
     },
