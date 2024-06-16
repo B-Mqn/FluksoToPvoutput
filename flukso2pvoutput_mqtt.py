@@ -1,4 +1,4 @@
- # V3.1
+ # V3.2
 
 import paho.mqtt.client as mqtt
 import time
@@ -17,6 +17,9 @@ PVOUTPUT_URL = "https://pvoutput.org/service/r2/addstatus.jsp"
 PVOUTPUT_BATCH_URL = "https://pvoutput.org/service/r2/addbatchstatus.jsp"
 PVOUTPUT_APIKEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 PVOUTPUT_SYSTEMID = "xxxxx"
+
+# Net metering
+NET_METERING = False  # Set to True or False as needed 
 
 BACKLOG_FILE = "/home/pi/f2pvobacklog.log"
 
@@ -122,7 +125,11 @@ def send_to_pvoutput(payload):
     headers = {
         'X-Pvoutput-Apikey': PVOUTPUT_APIKEY,
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
-    }
+    }   
+    
+    if NET_METERING:
+        data_param += "&n=1"
+        
     response = requests.post(PVOUTPUT_URL, data=payload, headers=headers)
     return response.status_code, response.text.split('<')[0]  # Only return the text before the first '<'
 
@@ -133,6 +140,10 @@ def send_batch_to_pvoutput(data_param):
         'X-Pvoutput-Apikey': PVOUTPUT_APIKEY,
         'X-Pvoutput-SystemId': PVOUTPUT_SYSTEMID
     }
+    
+    if NET_METERING:
+        data_param += "&n=1"
+        
     response = requests.post(PVOUTPUT_BATCH_URL, data={"data": data_param}, headers=headers)
     return response.status_code, response.text.split('<')[0]  # Only return the text before the first '<'
 
