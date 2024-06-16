@@ -57,7 +57,9 @@ I use winscp to access the filesystem to make it easier for copy pasting etc whe
 
 ### troubleshooting 
 if your having issues stop the service using above stop command  and then run `python3 /home/pi/flukso2pvoutput_mqtt.py`  to see if you can see what the error/problem is (Ctrl + C to close). 
-  - This will show live mqtt data and other 5 min interval data - dont forget to start the service again or reboot the device. 
+  - This will show live mqtt data and other 5 min interval data - dont forget to start the service again or reboot the device.
+    
+  
 Debugging
   - Enable the debug flag in the `flukso2pvoutput_mqtt.py` file - `DEBUG_LOG = True`  # True = On False = Off
   - run the python script like above after stopping the service. and run another terminal with `tail -f /home/pi/f2pvodebug.log` to see real time debug logs (these are added every 5 minutes)
