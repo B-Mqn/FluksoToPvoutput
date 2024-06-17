@@ -7,7 +7,7 @@
 
 ## "Version 1" Available in Branch - Basic with basic rules
 ## "Version 2" (This one in Main Branch)
-## "Version 3.1" Available in Branch - (Patch 1) - Enhanced Rules and a few other fixes
+## "Version 3.1" Available in Branch - (Patch 1) - Enhanced Rules and a few other fixes (Currently testing)
 ## "Version 3.2" Available in Branch - (Patch 2) - Added Net metering option - (This is untested)
 
 ### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
