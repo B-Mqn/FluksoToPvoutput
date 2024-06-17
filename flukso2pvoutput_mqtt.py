@@ -1,8 +1,8 @@
-# V3.2 -	This is design Purely to send Flukso data to Pvoutput using MQTT.
+# V3.2 - This is design Purely to send Flukso data to Pvoutput using MQTT.
 
 # Created by Bman - https://github.com/B-Mqn/FluksoToPVoutput - happy for anyone to edit it but please dont remove my credit of creating it.
 
-#	 head over to https://forum.pvoutput.org to discuss it.
+# head over to https://forum.pvoutput.org to discuss it.
 
 import paho.mqtt.client as mqtt
 import time
