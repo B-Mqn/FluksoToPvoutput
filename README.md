@@ -5,9 +5,11 @@
   - added gauge and counter sensor types so water/gas should work aswell now
   - and lots of bugfixes
 
-## V3 in testing in the (Patch 1) Branch -  multi rules for the same value fix
+## "Version 1" Available in Branch - Basic with basic rules
+## "Version 2" (This one in Main Branch)
+## "Version 3.1" Available in Branch - (Patch 1) - Enhanced Rules and a few other fixes
+## "Version 3.2" Available in Branch - (Patch 2) - Added Net metering option - (This is untested)
 
-## (Old version still available in "V1" Branch if this causes you problems)
 ### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
 
 Im just learning myself so hope this works still work in progress so bare with me on the readme/files Trying to make this easy to follow with minimal knowledge like myself.
