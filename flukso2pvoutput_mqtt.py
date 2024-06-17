@@ -83,7 +83,7 @@ CUSTOM_RULES = {
 
 # Debug settings
 DEBUG_SLEEP_DURATION = 0  # Default is 0 , this is how long the loop takes to run. 10 to 15 is a good setting for testing # sleep time is normally 300 seconds (5 minutes).
-# I reccomend modifying BOTH pvoutput urls so you dont send data every 10 seconds!. I just changed /service/ to /servicezz/
+# I reccomend modifying BOTH pvoutput urls so you dont send data every 10 seconds!. I just change /service/ to /servicezz/
 DEBUG_LOG = False  # True = On False = Off
 DEBUG_LOG_FILE = "/home/pi/f2pvodebug.log"
 
