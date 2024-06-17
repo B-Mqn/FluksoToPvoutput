@@ -10,7 +10,9 @@
 ### "Version 3.1" Available in Branch - (Patch 1) - Enhanced Rules and a few other fixes (Currently testing)
 ### "Version 3.2" Available in Branch - (Patch 2) - Added Net metering option - (This is untested)
 
-### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
+
+
+## This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
 
 Im just learning myself so hope this works still work in progress so bare with me on the readme/files Trying to make this easy to follow with minimal knowledge like myself.
 
