@@ -61,7 +61,7 @@ SENSORS = [
 
 # Define the custom value adjustment rules
 #
-# If rules seem to be a bit backwards so	"0 (Answer) if v4 < 50 (Question and Criteria) else v4 (Answer if doesn't meet criteria)" ##Actual Rule >##  "v4": "0 if v4 < 50 else v4",
+# If rules don't work... use version 3.1 if required 
 #				
 
 CUSTOM_RULES = {
