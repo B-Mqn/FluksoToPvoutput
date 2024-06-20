@@ -5,9 +5,10 @@
   - added gauge and counter sensor types so water/gas should work aswell now
   - and lots of bugfixes
 
-## V3 in testing in the (Patch 1) Branch -  multi rules for the same value fix
+#### (Old version still available in "V1" Branch if this causes you problems)
+#### V3.1 in testing in the (Patch 1) Branch -  multi rules for the same value fix
+#### V3.2 in (Patch 2) Branch -  v31. with added net consumption
 
-## (Old version still available in "V1" Branch if this causes you problems)
 ### This sends the flukso sensor data to pvoutput it can be uploaded from v1 to v12.
 
 Im just learning myself so hope this works still work in progress so bare with me on the readme/files Trying to make this easy to follow with minimal knowledge like myself.
